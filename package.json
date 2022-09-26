@@ -7,7 +7,7 @@
   "module": "build/module/index.js",
   "repository": "https://github.com/stepancar/jest-ifgef-transform",
   "license": "MIT",
-  "keywords": [],
+  "keywords": ["jest", "transform", "ifdef-loader"],
   "scripts": {
     "build": "run-p build:*",
     "build:main": "tsc -p tsconfig.json",
