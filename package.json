@@ -1,6 +1,6 @@
 {
-  "name": "jest-ifgef-transform",
-  "version": "1.1.0",
+  "name": "jest-ifdef-transform",
+  "version": "1.0.0",
   "description": "Analog https://www.npmjs.com/package/ifdef-loader for jest",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
