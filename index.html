@@ -1,0 +1,312 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>ifdef-loader</title>
+	<meta name="description" content="Documentation for ifdef-loader">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">ifdef-loader</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>ifdef-loader</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#ifdef-loader" id="ifdef-loader" style="color: inherit; text-decoration: none;">
+					<h1>ifdef-loader</h1>
+				</a>
+				<p>Webpack loader that allows JavaScript or TypeScript conditional compilation (<code>#if ... #elif ... #else ... #endif</code>)
+				directly from Webpack.</p>
+				<p>Conditional compilation directives are written inside <code>///</code> triple slash comment so
+				that they don&#39;t effect normal JavaScript or TypeScript parsing.</p>
+				<p>Example:</p>
+				<pre><code class="language-js"><span class="hljs-comment">/// #if DEBUG</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;there&#x27;s a bug!&quot;</span>);
+<span class="hljs-comment">/// #endif</span>
+</code></pre>
+				<p>The <code>DEBUG</code> or any other variable can be specified when configuring the Webpack loader (see below).</p>
+				<p>The directive <code>#if</code> accepts any valid JavaScript expression:</p>
+				<pre><code class="language-js"><span class="hljs-comment">/// #if PRODUCTION &amp;&amp; version.charAt(0)==&#x27;X&#x27;</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Ho!&quot;</span>);
+<span class="hljs-comment">/// #endif</span>
+</code></pre>
+				<p>If the expression is <code>true</code> the block of code between <code>#if</code> and <code>#endif</code> is included, otherwise is excluded by commenting it out.</p>
+				<p>Additionally, <code>#elif</code> and <code>#else</code> clauses can be added to an <code>#if</code> clause:</p>
+				<pre><code class="language-js"><span class="hljs-comment">/// #if env == &#x27;PRODUCTION&#x27;</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Production!&#x27;</span>);
+<span class="hljs-comment">/// #elif env == &#x27;DEBUG&#x27;</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Debug!&#x27;</span>);
+<span class="hljs-comment">/// #else</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Something else!&#x27;</span>);
+<span class="hljs-comment">/// #endif</span>
+</code></pre>
+				<p>The <code>#if</code> clauses can also be nested:</p>
+				<pre><code class="language-js"><span class="hljs-comment">/// #if PRODUCTION</span>
+      <span class="hljs-comment">/// #if OS==&quot;android&quot;</span>
+      android_code();
+      <span class="hljs-comment">/// #elif OS==&quot;ios&quot;</span>
+      ios_code();
+      <span class="hljs-comment">/// #endif</span>
+<span class="hljs-comment">/// #endif</span>
+</code></pre>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
+				<p>In webpack build directory:</p>
+				<pre><code>npm install ifdef-loader --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span>
+</code></pre>
+				<a href="#configuration" id="configuration" style="color: inherit; text-decoration: none;">
+					<h2>Configuration</h2>
+				</a>
+				<p>Example of use with TypeScript files, enabling the <code>DEBUG</code> and <code>version</code> variables:</p>
+				<p>In <code>webpack.config.json</code> put <code>ifdef-loader</code> after <code>ts-loader</code> so that files are processed
+				before going into TypeScript compiler: </p>
+				<pre><code class="language-js"><span class="hljs-comment">// define preprocessor variables</span>
+<span class="hljs-keyword">const</span> opts = {
+   <span class="hljs-attr">DEBUG</span>: <span class="hljs-literal">true</span>,
+   <span class="hljs-attr">version</span>: <span class="hljs-number">3</span>,
+   <span class="hljs-string">&quot;ifdef-verbose&quot;</span>: <span class="hljs-literal">true</span>,                 <span class="hljs-comment">// add this for verbose output</span>
+   <span class="hljs-string">&quot;ifdef-triple-slash&quot;</span>: <span class="hljs-literal">false</span>,           <span class="hljs-comment">// add this to use double slash comment instead of default triple slash</span>
+   <span class="hljs-string">&quot;ifdef-fill-with-blanks&quot;</span>: <span class="hljs-literal">true</span>         <span class="hljs-comment">// add this to remove code with blank spaces instead of &quot;//&quot; comments</span>
+   <span class="hljs-string">&quot;ifdef-uncomment-prefix&quot;</span>: <span class="hljs-string">&quot;// #code &quot;</span>  <span class="hljs-comment">// add this to uncomment code starting with &quot;// #code &quot;</span>
+};
+
+<span class="hljs-comment">/* ... */</span> { 
+   <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.tsx?$/</span>, 
+   exclude: <span class="hljs-regexp">/node_modules/</span>, 
+   use: [
+      { <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;ts-loader&quot;</span> }, 
+      { <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;ifdef-loader&quot;</span>, <span class="hljs-attr">options</span>: opts } 
+   ]
+}
+
+<span class="hljs-comment">// alternatively, options can be passed via query string:</span>
+<span class="hljs-keyword">const</span> q = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;querystring&#x27;</span>).encode(opts);
+<span class="hljs-comment">/* ... */</span> { 
+   <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.tsx?$/</span>, 
+   exclude: <span class="hljs-regexp">/node_modules/</span>, 
+   loaders: [ <span class="hljs-string">&quot;ts-loader&quot;</span>, <span class="hljs-string">`ifdef-loader?<span class="hljs-subst">${q}</span>`</span> ] 
+}
+</code></pre>
+				<p>in <code>example.ts</code>:</p>
+				<pre><code class="language-ts"><span class="hljs-comment">/// #if DEBUG</span>
+     <span class="hljs-comment">/* code to be included if DEBUG is defined */</span>
+<span class="hljs-comment">///   #if version &lt;2</span>
+        <span class="hljs-comment">/* code to be included if DEBUG is defined and version &lt; 2*/</span>
+<span class="hljs-comment">///   #endif</span>
+<span class="hljs-comment">/// #endif</span>
+</code></pre>
+				<a href="#code-in-comments" id="code-in-comments" style="color: inherit; text-decoration: none;">
+					<h2>Code in comments</h2>
+				</a>
+				<p>Often times writing <code>#if</code> ... <code>#else</code> ... <code>#endif</code> results in code that is not syntactically valid
+					or does not pass the LINT check. A possible workaround is to hide such code in comments
+				and let <code>ifdef-loader</code> uncomment it if it&#39;s part of the block that has to be included in the output.</p>
+				<p>Example:</p>
+				<p>The following code is invalid because the linter sees a double declaration of the <code>a</code> variable.</p>
+				<pre><code><span class="hljs-regexp">//</span> <span class="hljs-comment">#if DEBUG</span>
+let a=<span class="hljs-number">1</span>;
+<span class="hljs-regexp">//</span> <span class="hljs-comment">#else</span>
+let a=<span class="hljs-number">2</span>;
+<span class="hljs-regexp">//</span> <span class="hljs-comment">#endif</span>
+</code></pre>
+				<p>Using code in comments:</p>
+				<pre><code><span class="hljs-regexp">//</span> <span class="hljs-comment">#if DEBUG</span>
+let a=<span class="hljs-number">1</span>;
+<span class="hljs-regexp">//</span> <span class="hljs-comment">#else</span>
+<span class="hljs-regexp">//</span> <span class="hljs-comment">#code let a=2;</span>
+<span class="hljs-regexp">//</span> <span class="hljs-comment">#endif</span>
+</code></pre>
+				<p>The code is now under comment so it&#39;s ignored by the linter; but it&#39;s uncommented
+				by <code>ifdef-loader</code> if the else branch has to be included in the output (that is when <code>DEBUG==false</code>).</p>
+				<p>The <code>// #code </code> string prefix can be changed and has to be explictly specified
+				in the options object:</p>
+				<pre><code>const opts = {
+   <span class="hljs-regexp">//</span> ...
+   <span class="hljs-string">&quot;ifdef-uncomment-prefix&quot;</span>: <span class="hljs-string">&quot;// #code &quot;</span>,
+   <span class="hljs-regexp">//</span> ...
+};
+</code></pre>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>License</h2>
+				</a>
+				<p>MIT</p>
+				<a href="#contributions" id="contributions" style="color: inherit; text-decoration: none;">
+					<h2>Contributions</h2>
+				</a>
+				<p>Contributions in the form of issues or pull requests are welcome.</p>
+				<a href="#changes" id="changes" style="color: inherit; text-decoration: none;">
+					<h2>Changes</h2>
+				</a>
+				<ul>
+					<li><p>v2.3.0 added option <code>uncomment-prefix</code> to write code in comments allowing it to pass through linters and syntax checking</p>
+					</li>
+					<li><p>v2.2.0 added option <code>fill-with-blanks</code> for removing code with blank spaces instead of <code>//</code> comments</p>
+					</li>
+					<li><p>v2.1.0 added support for <code>#elif</code> clause.</p>
+					</li>
+					<li><p>v2.0.0 BREAKING CHANGE: options are now passed using the
+						standard Webpack API (<code>loader-utils</code>). See below for the upgrade.</p>
+					</li>
+					<li><p>v1.0.0 changed to triple slash comment syntax. Double slash syntax
+						deprecated and available by turning off the <code>ifdef-triple-slash</code> option.</p>
+					</li>
+					<li><p>v1.0.3 fixed bug occurring with short lines. Improved handling of line
+						termination (CRLF vs LF) in order to preserve source maps.</p>
+					</li>
+					<li><p>v1.1.0 added support for <code>#else</code> clauses.</p>
+					</li>
+				</ul>
+				<a href="#upgrading-from-v1-to-v2" id="upgrading-from-v1-to-v2" style="color: inherit; text-decoration: none;">
+					<h2>Upgrading from v1 to v2</h2>
+				</a>
+				<p>In v2 options are passed differently than v1, so you need to update your <code>webpack.config.js</code>.
+				Just do the following simple changes:</p>
+				<pre><code class="language-js"><span class="hljs-comment">/* from */</span> <span class="hljs-keyword">const</span> q = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;querystring&#x27;</span>).encode({<span class="hljs-attr">json</span>: <span class="hljs-built_in">JSON</span>.stringify(opts)});
+<span class="hljs-comment">/* to   */</span> <span class="hljs-keyword">const</span> q = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;querystring&#x27;</span>).encode(opts);
+<span class="hljs-comment">/* you can keep the  ... `ifdef-loader?${q}` ... syntax    */</span>
+<span class="hljs-comment">/* but it&#x27;s better to pass options directly (see the docs) */</span>
+</code></pre>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-is-external">
+						<a href="enums/iftype.html" class="tsd-kind-icon">If<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/ifblock.html" class="tsd-kind-icon">If<wbr>Block</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/range.html" class="tsd-kind-icon">Range</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#ifdefconfig" class="tsd-kind-icon">Ifdef<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="globals.html#fillcharacter" class="tsd-kind-icon">fill<wbr>Character</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="globals.html#uncommentprefix" class="tsd-kind-icon">uncomment<wbr>Prefix</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="globals.html#usetripleslash" class="tsd-kind-icon">use<wbr>Triple<wbr>Slash</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#apply_if" class="tsd-kind-icon">apply_<wbr>if</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#blank_code" class="tsd-kind-icon">blank_<wbr>code</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#evaluate" class="tsd-kind-icon">evaluate</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#find_if_blocks" class="tsd-kind-icon">find_<wbr>if_<wbr>blocks</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#ifregex" class="tsd-kind-icon">if<wbr>Regex</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#match_else" class="tsd-kind-icon">match_<wbr>else</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#match_endif" class="tsd-kind-icon">match_<wbr>endif</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#match_if" class="tsd-kind-icon">match_<wbr>if</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#parse" class="tsd-kind-icon">parse</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#parse_if" class="tsd-kind-icon">parse_<wbr>if</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#parse_if_block" class="tsd-kind-icon">parse_<wbr>if_<wbr>block</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#reveal_code" class="tsd-kind-icon">reveal_<wbr>code</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#ifdeftransformer" class="tsd-kind-icon">Ifdef<wbr>Transformer</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
