@@ -50,12 +50,12 @@ jest.config.ts
 
 ```typescript
 transform: {
-    'myClass/index.ts$': ['.jest/ifdf-transformer', {
-        'NODE': true,
+    'myClass/index.ts$': ['jest-ifdf-transform', {
         'ifdef-verbose': true,
         'ifdef-triple-slash': true,
         'ifdef-fill-with-blanks': true,
         'ifdef-uncomment-prefix': '/// #code ',
+        'NODE': true, // variable, which you can use in code
     }],
 },
 ```
