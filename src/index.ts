@@ -1,4 +1,4 @@
-import {SyncTransformer} from '@jest/transform';
+import type {SyncTransformer} from '@jest/transform';
 import { parse } from 'ifdef-loader/preprocessor';
 
 type IfdefConfig = {
