@@ -24,7 +24,7 @@ const IfdefTransformer: SyncTransformer<IfdefConfig> = {
     const uncommentPrefixFlag = "ifdef-uncomment-prefix";
     const uncommentPrefix = transformerConfig[uncommentPrefixFlag];
 
-    const data = Array.from(Object.entries(transformerConfig).filter(([key]) => [verboseFlag, tripleSlashFlag, fillWithBlanksFlag, uncommentPrefixFlag].includes(key)));
+    const data = Object.fromEntries(Object.entries(transformerConfig).filter(([key]) => ![verboseFlag, tripleSlashFlag, fillWithBlanksFlag, uncommentPrefixFlag].includes(key)));
 
     try {
       const code = parse(sourceText, data, verbose, tripleSlash, sourcePath, fillWithBlanks, uncommentPrefix);
